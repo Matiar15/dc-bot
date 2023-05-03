@@ -2,7 +2,6 @@ import asyncio
 import os 
 import discord
 from discord.ext import commands
-from discord import app_commands
 
 TOKEN = 'MTEwMDgxNzgzNzc3OTYwMzU0Ng.Glhc-C.y-jT_dQ7iI1i5pAEPQORAAaknJ9y3pFAzvtQlc'
 ID = 973324684538052628
@@ -11,7 +10,7 @@ intents.members = True
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
 async def load():
-    for filename in os.listdir('./discord-bot/cogs'):
+    for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             await bot.load_extension(f'cogs.{filename[:-3]}')
             

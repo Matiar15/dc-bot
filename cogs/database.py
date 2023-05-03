@@ -11,6 +11,12 @@ class database(commands.Cog):
 
     @app_commands.command(description='Dodaj się do bazy danych')
     async def addtodatabase(self, interaction: discord.Interaction): 
+        
+        '''
+            This command first gets query and if the data is None returns an Error, because
+            user is already in the database. After this it injects data to the database.
+        ''' 
+
         author = interaction.user
         author_str = str(author)
         values = (author_str,)
@@ -19,7 +25,7 @@ class database(commands.Cog):
         query = ('SELECT user_name FROM discord_user where user_name = %s')
 
         try:
-            if len(mysqlconnection.mysqlQuery(conn_response, query, values)) > 0: raise mysqlconnection.IntegrityError() # checks if a user has already given the cridentials to the db
+            if mysqlconnection.mysqlQuery(conn_response, query, values) is None: raise mysqlconnection.IntegrityError() # checks if a user has already given the cridentials to the db
         except mysqlconnection.IntegrityError:
             await interaction.response.send_message('You\'ve already been added to the database, don\'t waste my time 😤😤') 
         else:    
@@ -41,10 +47,16 @@ class database(commands.Cog):
         else:
             await interaction.response.send_message(str(author) + ' has been added to the database 😘😘😘')
 
-
+    
     @app_commands.command(description='Sprawdź swój balance 😎😎 (najpierw dodaj się do bazy danych!)')
     async def balance(self, interaction: discord.Interaction):
         
+        '''
+            This command checks firstly if user has a balance on him, gets query from database and if username 
+            is the same as in database. Checks his balance by getting another query where you join user with
+            the same balance id and gets balance_amount.
+        '''    
+
         author = interaction.user
         
         author_str = str(author)
@@ -63,6 +75,34 @@ class database(commands.Cog):
         else:    
             await interaction.response.send_message(f'Your current balance is: {data[0][0]} bucks! 💸💸💸')
         
+    @app_commands.command(description='Usuń się z bazy danych (ale jak to zrobisz to będzie mi smutno 🤔🤔)')
+    async def deletefromdatabase(self, interaction: discord.Interaction):
+        
+        '''
+            This command deletes user from the database 
+        '''
+        author = interaction.user
+        
+        author_str = str(author)
+        values = (author_str,)
+
+        conn_response = mysqlconnection.checkConnection(conn)
+
+        query = (""" DELETE FROM discord_user, discord_user_balance
+                     USING discord_user
+                     INNER JOIN discord_user_balance
+                     WHERE discord_user.user_name = %s
+                         AND discord_user.balance_id = discord_user_balance.balance_id
+                     """)
+        try:
+            mysqlconnection.mysqlQueryForDelete(conn_response, query, values)
+        except mysqlconnection.Error:
+            await interaction.response.send_message('Maybe you haven\'t made an account, consider adding yourself to the database 😘')
+        finally:
+            await interaction.response.send_message('You were successfully deleted from the database 🤣🤣🤣')
+        
+
+
 
 
 async def setup(bot):

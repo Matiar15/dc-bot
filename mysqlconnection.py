@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-from mysql.connector import IntegrityError
 
 config = {
 'user': 'x687',
@@ -18,6 +17,7 @@ def mysqlConnection():
     
     return db_connection
 
+
 def mysqlQuery(connection, query, value):
     cursor = connection.cursor()
     data = None
@@ -26,12 +26,21 @@ def mysqlQuery(connection, query, value):
     print('Query executed correcly!')
     return data        
     
+
+def mysqlQueryForDelete(connection, query, value):
+    cursor = connection.cursor()
+    cursor.execute(query, value)
+    print('SQL DELETE executed correcly!')
+    connection.commit()
+    
+
 def mysqlInsertWithValue(connection, query, value):
     cursor = connection.cursor()
     cursor.execute(query, value)
     connection.commit()
     row = cursor.lastrowid
     return row
+
 
 def mysqlInsert(connection, query):
     cursor = connection.cursor()
@@ -40,11 +49,13 @@ def mysqlInsert(connection, query):
     row = cursor.lastrowid
     return row
     
+
 def mysqlUpdate(connection, query, value):
     cursor = connection.cursor()
     cursor.execute(query, value)
     print('SQL UPDATE executed correcly!')
     connection.commit()
+
 
 def mysqlUpdate(connection, query):
     cursor = connection.cursor()
@@ -58,3 +69,7 @@ def checkConnection(connection):
         return mysqlConnection()
     else:
         return connection
+
+
+
+
