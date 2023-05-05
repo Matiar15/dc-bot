@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-from datetime import datetime
 
 
 config = {
@@ -9,6 +8,10 @@ config = {
 'host': 'mysql.mikr.us',
 'database': 'db_x687',
 'raise_on_warnings': True,}
+
+
+# FIXME: change mysql.connector to aiomysql
+# because mysql.connector can't handle refreshing data 
 
 
 def mysqlConnection():
@@ -21,55 +24,59 @@ def mysqlConnection():
     return db_connection
 
 
-def mysqlQuery(connection, query, value):
+def mysqlQueryWithValue(query, value):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     data = None
     cursor.execute(query, value)
     data = cursor.fetchall()
     print('Query executed correcly!')
+    connection.close()
     return data        
     
 
-def mysqlQueryForDelete(connection, query, value):
+def mysqlQueryForDeleteWithValue(query, value):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query, value)
     print('SQL DELETE executed correcly!')
     connection.commit()
-    
+    connection.close()
 
-def mysqlInsertWithValue(connection, query, value):
+def mysqlInsertWithValue(query, value):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query, value)
     connection.commit()
+    connection.close()
     row = cursor.lastrowid
     return row
 
 
-def mysqlInsert(connection, query):
+def mysqlInsert(query):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query)
     connection.commit()
+    connection.close()
     row = cursor.lastrowid
     return row
     
 
-def mysqlUpdateWithValue(connection, query, value):
+def mysqlUpdateWithValue(query, value):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query, value)
     print('SQL UPDATE executed correcly!')
     connection.commit()
+    connection.close()
 
 
-def mysqlUpdate(connection, query):
+def mysqlUpdate(query):
+    connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query)
     print('SQL UPDATE executed correcly!')
     connection.commit()
-
-
-def checkConnection(connection):
-    if not connection.is_connected:
-        return mysqlConnection()
-    else:
-        return connection
+    connection.close()
 
