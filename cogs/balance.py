@@ -5,9 +5,6 @@ import mysqlconnection
 from datetime import datetime
 
 
-conn = mysqlconnection.mysqlConnection()
-
-
 class balance(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -23,14 +20,13 @@ class balance(commands.Cog):
         author_str = str(author)
         values = (author_str,)
 
-        conn_response = mysqlconnection.checkConnection(conn)
         query = (""" SELECT discord_user_balance.balance_amount 
                 FROM discord_user_balance 
                 join discord_user 
                 on discord_user.balance_id = discord_user_balance.balance_id where discord_user.user_name = %s;""")
         
         try:
-            data = mysqlconnection.mysqlQuery(conn_response, query, values)
+            data = mysqlconnection.mysqlQueryWithValue(query, values)
         except mysqlconnection.Error:
             await interaction.response.send_message('I couldn\'t find your balance, consider adding one! 😑')
         else:    
@@ -47,15 +43,13 @@ class balance(commands.Cog):
         author_str = str(author)
         values = (author_str,)
 
-        conn_response = mysqlconnection.checkConnection(conn)
-        
         query = (""" SELECT discord_user_balance.balance_amount, discord_user_balance.balance_id, daily_reward_at
                 FROM discord_user_balance 
                 join discord_user 
                 on discord_user.balance_id = discord_user_balance.balance_id where discord_user.user_name = %s;""")
         
         try:
-            data = mysqlconnection.mysqlQuery(conn_response, query, values)
+            data = mysqlconnection.mysqlQueryWithValue(query, values)
         except mysqlconnection.Error as e:
             await interaction.response.send_message(f'I couldn\'t find your balance, consider adding one! 😑 -> Error type: {e}')
         else: 
@@ -75,7 +69,7 @@ class balance(commands.Cog):
                 values = (balance_amount, curr_time, data[0][1])
                 
                 try:
-                    mysqlconnection.mysqlUpdateWithValue(conn_response, query, values)
+                    mysqlconnection.mysqlUpdateWithValue(query, values)
                 except mysqlconnection.Error:
                     await interaction.response.send_message(f'Something went wrong with inserting your daily money 😑')
                 else:
@@ -89,7 +83,7 @@ class balance(commands.Cog):
                     values = (balance_amount, curr_date_obj, data[0][1])
                     
                     try:
-                        mysqlconnection.mysqlUpdateWithValue(conn_response, query, values)
+                        mysqlconnection.mysqlUpdateWithValue(query, values)
                     except mysqlconnection.Error:
                         await interaction.response.send_message(f'Something went wrong with inserting your daily money 😑')
                     else:

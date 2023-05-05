@@ -4,9 +4,6 @@ from discord import app_commands
 import mysqlconnection
 
 
-conn = mysqlconnection.mysqlConnection()
-
-
 class database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -21,18 +18,17 @@ class database(commands.Cog):
         author_str = str(author)
         values = (author_str,)
 
-        conn_response = mysqlconnection.checkConnection(conn)
         query = ('SELECT user_name FROM discord_user where user_name = %s')
 
         try:
-            if mysqlconnection.mysqlQuery(conn_response, query, values) is None: raise mysqlconnection.IntegrityError() # checks if a user has already given the cridentials to the db
+            if mysqlconnection.mysqlQueryWithValue(query, values) is None: raise mysqlconnection.IntegrityError() # checks if a user has already given the cridentials to the db
         except mysqlconnection.IntegrityError:
             await interaction.response.send_message('You\'ve already been added to the database, don\'t waste my time 😤😤') 
         else:    
             query = ('INSERT INTO discord_user_balance (balance_amount) VALUES (1000)')
 
         try:
-            balance_id = mysqlconnection.mysqlInsert(conn_response, query)
+            balance_id = mysqlconnection.mysqlInsert(query)
         except mysqlconnection.Error:
             await interaction.response.send_message('Something went bad with adding your balance, call the ambulance(or maybe a bot owner)! 🚑🚑')
         
@@ -41,7 +37,7 @@ class database(commands.Cog):
         query = ('INSERT INTO discord_user (user_name, balance_id) VALUES (%s, %s)')
         try:    
             
-            mysqlconnection.mysqlInsertWithValue(conn_response, query, values_with_balance)
+            mysqlconnection.mysqlInsertWithValue(query, values_with_balance)
         except mysqlconnection.Error:
             await interaction.response.send_message('Something went bad with adding you to the database 😥')
         else:
@@ -58,8 +54,6 @@ class database(commands.Cog):
         author_str = str(author)
         values = (author_str,)
 
-        conn_response = mysqlconnection.checkConnection(conn)
-
         query = (""" DELETE FROM discord_user, discord_user_balance
                      USING discord_user
                      INNER JOIN discord_user_balance
@@ -67,7 +61,7 @@ class database(commands.Cog):
                          AND discord_user.balance_id = discord_user_balance.balance_id
                      """)
         try:
-            mysqlconnection.mysqlQueryForDelete(conn_response, query, values)
+            mysqlconnection.mysqlQueryForDeleteWithValue(query, values)
         except mysqlconnection.Error:
             await interaction.response.send_message('Maybe you haven\'t made an account, consider adding yourself to the database 😘')
         finally:
