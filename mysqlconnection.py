@@ -3,10 +3,10 @@ from mysql.connector import Error
 
 
 config = {
-'user': 'x687',
-'password': '8699_b06082',
-'host': 'mysql.mikr.us',
-'database': 'db_x687',
+'user': 'user',
+'password': 'password',
+'host': 'host',
+'database': 'database',
 'raise_on_warnings': True,}
 
 
