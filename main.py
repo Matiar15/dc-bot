@@ -3,8 +3,7 @@ import os
 import discord
 from discord.ext import commands
 
-TOKEN = 'MTEwMDgxNzgzNzc3OTYwMzU0Ng.Glhc-C.y-jT_dQ7iI1i5pAEPQORAAaknJ9y3pFAzvtQlc'
-ID = 973324684538052628
+TOKEN = '-'
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
