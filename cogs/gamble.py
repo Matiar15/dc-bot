@@ -74,9 +74,9 @@ class gamble(commands.Cog):
             
     @app_commands.command()
     @app_commands.choices(color=[app_commands.Choice(name="Black", value="black"),
-                                app_commands.Choice(name="Black-Fish", value="black-fish"),
+                                app_commands.Choice(name="Blackfish", value="blackfish"),
                                 app_commands.Choice(name="Red", value="red"),
-                                app_commands.Choice(name="Red-Fish", value="red-fish"),
+                                app_commands.Choice(name="Redfish", value="redfish"),
                                 app_commands.Choice(name="Green", value="green")])
     async def roulette(self, interaction: discord.Interaction, amount: int , color: app_commands.Choice[str]):
         '''Choose a color to roll (Black, Black-Fish, Red, Red-Fish, Green). Black/Red gives 2x the amount you gave to command.
@@ -107,7 +107,7 @@ class gamble(commands.Cog):
         else:
             await interaction.followup.send(f'Rolling...')
             await asyncio.sleep(1)
-            roll_roulette = random.choice(['black', 'black', 'black-fish', 'black', 'black', 'black', 'black', 'green', 'red', 'red-fish', 'red', 'red', 'red', 'red', 'red'])
+            roll_roulette = random.choice(['black', 'black', 'blackfish', 'black', 'black', 'black', 'black', 'green', 'red', 'redfish', 'red', 'red', 'red', 'red', 'red'])
             
             if roll_roulette == color.value:
                 if color.value == ('green'):
