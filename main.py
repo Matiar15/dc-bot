@@ -2,9 +2,9 @@ import asyncio
 import os 
 import discord
 from discord.ext import commands
-
-TOKEN = 'MTEwMDgxNzgzNzc3OTYwMzU0Ng.G31EPI.W1Qn6E_z4YiKbyE0xFLIrEgUlvxgqMpyEv0xTM'
-ID = 973324684538052628
+import json
+data = json.load(open('token.json'))
+TOKEN = data(['TOKEN'])
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
