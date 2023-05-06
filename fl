@@ -1,0 +1,65 @@
+[33mcommit d84ff488797b3b2e316252febd703eef76e44d6b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Sat May 6 17:40:24 2023 +0200
+
+    Update .gitignore
+
+[33mcommit 6a05cfa21ecd15720e5dc25342c5d924de5d0097[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Sat May 6 17:38:42 2023 +0200
+
+    Create .gitignore
+    
+    added for safety/ordinal reasons
+
+[33mcommit 04f705f411993812e3fcc59ed22371f328fdd2d4[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Fri May 5 18:10:18 2023 +0200
+
+    oops
+
+[33mcommit 55dc51f16dc4326f75373b5ec7d1d797ebceb5af[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Fri May 5 18:09:48 2023 +0200
+
+    Added Toss a coin method.
+
+[33mcommit b081c3c373c2003919f50e41b37e0044a40e4179[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Fri May 5 18:09:01 2023 +0200
+
+    Erased db connection from functions, because of lack of data refreshment.
+
+[33mcommit 20eed7d0f9ec87fda5ffe5f204beacb8ced5d4f7[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Fri May 5 18:08:00 2023 +0200
+
+    Changed functions to open new connection every time, because there were
+    problems with refreshing data.
+
+[33mcommit af68e78c8862dbfd33b39725d718fa3066eb6f60[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Fri May 5 01:38:28 2023 +0200
+
+    made some adjustments with mysqlconnection file, added base command in balance (still in work)
+    added daily comamnd.
+
+[33mcommit 1dd2381b2b5d2b828b25c1027edbbb4239167fec[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Wed May 3 23:58:07 2023 +0200
+
+    Added delete from db function
+
+[33mcommit 1891d633d1afd78d71b6891cedabdb0e30e96ff1[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Sat Apr 29 02:24:18 2023 +0200
+
+    added venv to the project
+
+[33mcommit dbcde6b203a6423428c7bcfbe09544f357f4b656[m[33m ([m[1;32mgambling-cog[m[33m)[m
+Author: Mateusz Sidor <mateusz.sidor15@gmail.com>
+Date:   Sat Apr 29 02:07:34 2023 +0200
+
+    Already implemented bot, with 3 basic functions, connection to MYSQL database
+    
+    I made Cogs first of all, to maintain a better code. I did a helper mysqlconnection.py file to help me with mysql queries.
