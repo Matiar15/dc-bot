@@ -61,7 +61,7 @@ class database(commands.Cog):
                          AND discord_user.balance_id = discord_user_balance.balance_id
                      """)
         try:
-            mysqlconnection.mysqlQueryForDeleteWithValue(query, values)
+            mysqlconnection.mysqlQueryDeleteUpdateWithValue(query, values)
         except mysqlconnection.Error:
             await interaction.response.send_message('Maybe you haven\'t made an account, consider adding yourself to the database 😘')
         finally:

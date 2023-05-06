@@ -66,7 +66,7 @@ class gamble(commands.Cog):
                     SET balance_amount = %s
                     WHERE balance_id = %s""")
             values = (balance, data[0][1])
-            mysqlconnection.mysqlUpdateWithValue(query, values)
+            mysqlconnection.mysqlQueryDeleteUpdateWithValue(query, values)
             
             await asyncio.sleep(2)
             await interaction.followup.send(f'Your current balance is {balance} 🧔')
@@ -74,9 +74,15 @@ class gamble(commands.Cog):
             
     @app_commands.command()
     @app_commands.choices(color=[app_commands.Choice(name="Black", value="black"),
-                                    app_commands.Choice(name="Red", value="red"),
-                                    app_commands.Choice(name="Green", value="green")])
+                                app_commands.Choice(name="Black-Fish", value="black-fish"),
+                                app_commands.Choice(name="Red", value="red"),
+                                app_commands.Choice(name="Red-Fish", value="red-fish"),
+                                app_commands.Choice(name="Green", value="green")])
     async def roulette(self, interaction: discord.Interaction, amount: int , color: app_commands.Choice[str]):
+        '''Choose a color to roll (Black, Black-Fish, Red, Red-Fish, Green). Black/Red gives 2x the amount you gave to command.
+            Black-Fish/Red-Fish gives x7 the amount you gave to the command or x2 if you chose Black/Red.
+            Green gives x14 the amount you gave to the command.'''
+        await interaction.response.defer()
         author = interaction.user
         author : str = str(author)
         
@@ -98,8 +104,34 @@ class gamble(commands.Cog):
             
         except ValueError:
             await interaction.followup.send(f'The amount of coins you put to command is bigger than ur balance, choose another number 😐')      
-
-        roll_roulette = random.choice(['black', 'green', 'red'])
+        else:
+            await interaction.followup.send(f'Rolling...')
+            await asyncio.sleep(1)
+            roll_roulette = random.choice(['black', 'black', 'black-fish', 'black', 'black', 'black', 'black', 'green', 'red', 'red-fish', 'red', 'red', 'red', 'red', 'red'])
+            
+            if roll_roulette == color.value:
+                if color.value == ('green'):
+                    amount *= 14
+                elif 'fish' in color.value:
+                    amount *= 7
+                else:
+                    amount *= 2
+                balance += amount
+                await asyncio.sleep(1)
+                await interaction.followup.send(f'You won 👏👏! The color was {roll_roulette.capitalize()}')
+            else:
+                await asyncio.sleep(1)
+                await interaction.followup.send(f'Unfortunately, you lost. The color was {roll_roulette.capitalize()}. Maybe try again! 🙄') 
+            
+            query = ("""UPDATE discord_user_balance
+                    SET balance_amount = %s
+                    WHERE balance_id = %s""")
+            values = (balance, data[0][1])
+            mysqlconnection.mysqlQueryDeleteUpdateWithValue(query, values)
+            
+            await asyncio.sleep(2)
+            await interaction.followup.send(f'Your current balance is {balance} 🧔')
+                
                 
 async def setup(bot):
     await bot.add_cog(gamble(bot))

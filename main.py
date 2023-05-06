@@ -3,7 +3,7 @@ import os
 import discord
 from discord.ext import commands
 
-TOKEN = 'MTEwMDgxNzgzNzc3OTYwMzU0Ng.Glhc-C.y-jT_dQ7iI1i5pAEPQORAAaknJ9y3pFAzvtQlc'
+TOKEN = 'MTEwMDgxNzgzNzc3OTYwMzU0Ng.G31EPI.W1Qn6E_z4YiKbyE0xFLIrEgUlvxgqMpyEv0xTM'
 ID = 973324684538052628
 intents = discord.Intents.all()
 intents.members = True

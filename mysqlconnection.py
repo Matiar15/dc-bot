@@ -35,13 +35,23 @@ def mysqlQueryWithValue(query, value):
     return data        
     
 
-def mysqlQueryForDeleteWithValue(query, value):
+def mysqlQueryDeleteUpdateWithValue(query, value):
     connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
     cursor.execute(query, value)
-    print('SQL DELETE executed correcly!')
+    print('Query executed correcly!')
     connection.commit()
     connection.close()
+
+
+def mysqlUpdate(query):
+    connection = mysqlConnection()
+    cursor = connection.cursor(buffered=False)
+    cursor.execute(query)
+    print('Query executed correcly!')
+    connection.commit()
+    connection.close()
+
 
 def mysqlInsertWithValue(query, value):
     connection = mysqlConnection()
@@ -52,7 +62,7 @@ def mysqlInsertWithValue(query, value):
     row = cursor.lastrowid
     return row
 
-
+ 
 def mysqlInsert(query):
     connection = mysqlConnection()
     cursor = connection.cursor(buffered=False)
@@ -62,21 +72,3 @@ def mysqlInsert(query):
     row = cursor.lastrowid
     return row
     
-
-def mysqlUpdateWithValue(query, value):
-    connection = mysqlConnection()
-    cursor = connection.cursor(buffered=False)
-    cursor.execute(query, value)
-    print('SQL UPDATE executed correcly!')
-    connection.commit()
-    connection.close()
-
-
-def mysqlUpdate(query):
-    connection = mysqlConnection()
-    cursor = connection.cursor(buffered=False)
-    cursor.execute(query)
-    print('SQL UPDATE executed correcly!')
-    connection.commit()
-    connection.close()
-

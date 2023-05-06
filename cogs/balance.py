@@ -69,7 +69,7 @@ class balance(commands.Cog):
                 values = (balance_amount, curr_time, data[0][1])
                 
                 try:
-                    mysqlconnection.mysqlUpdateWithValue(query, values)
+                    mysqlconnection.mysqlQueryDeleteUpdateWithValue(query, values)
                 except mysqlconnection.Error:
                     await interaction.response.send_message(f'Something went wrong with inserting your daily money 😑')
                 else:
@@ -83,7 +83,7 @@ class balance(commands.Cog):
                     values = (balance_amount, curr_date_obj, data[0][1])
                     
                     try:
-                        mysqlconnection.mysqlUpdateWithValue(query, values)
+                        mysqlconnection.mysqlQueryDeleteUpdateWithValue(query, values)
                     except mysqlconnection.Error:
                         await interaction.response.send_message(f'Something went wrong with inserting your daily money 😑')
                     else:
