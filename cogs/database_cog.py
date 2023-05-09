@@ -4,12 +4,12 @@ from discord import app_commands
 import mysqlconnection
 
 
-class database(commands.Cog):
+class database_cog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
 
-    @app_commands.command(description='Dodaj się do bazy danych')
+    @app_commands.command(description='Add yourself to database')
     async def addtodatabase(self, interaction: discord.Interaction): 
         
         '''This command first gets query and if the data is None returns an Error, because user is already in the database. After this it injects data to the database.''' 
@@ -44,7 +44,7 @@ class database(commands.Cog):
             await interaction.response.send_message(str(author) + ' has been added to the database 😘😘😘')
 
      
-    @app_commands.command(description='Usuń się z bazy danych (ale jak to zrobisz to będzie mi smutno 🤔🤔)')
+    @app_commands.command(description='Delete yourself from database (i\'ll be sad😣😣)')
     async def deletefromdatabase(self, interaction: discord.Interaction):
         
         '''Deletes user from database if exisits.'''
@@ -69,5 +69,5 @@ class database(commands.Cog):
         
 
 async def setup(bot):
-    await bot.add_cog(database(bot))
+    await bot.add_cog(database_cog(bot))
 

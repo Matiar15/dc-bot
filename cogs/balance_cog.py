@@ -5,12 +5,12 @@ import mysqlconnection
 from datetime import datetime
 
 
-class balance(commands.Cog):
+class balance_cog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
 
-    @app_commands.command(description='Sprawdź swój balance 😎😎 (najpierw dodaj się do bazy danych!)')
+    @app_commands.command(description='Check your balance 😎😎 (First off add yourself to database!)')
     async def balance(self, interaction: discord.Interaction):
             
         '''Checks if user has balance in database and if so, gives the amount of coins.'''    
@@ -33,7 +33,7 @@ class balance(commands.Cog):
             await interaction.response.send_message(f'Your current balance is: {data[0][0]} bucks! 💸💸💸')
 
 
-    @app_commands.command(description='Codziennie otrzymujesz darmowe 500 coinsów 🤑🤑')
+    @app_commands.command(description='Everyday you get 500 coins!🤑🤑')
     async def daily(self, interaction: discord.Interaction):
         
         '''Adds 500 coins to database balance if there was 24h delay in between getting daily reward.'''
@@ -93,4 +93,4 @@ class balance(commands.Cog):
                 
 
 async def setup(bot):
-    await bot.add_cog(balance(bot))
+    await bot.add_cog(balance_cog(bot))

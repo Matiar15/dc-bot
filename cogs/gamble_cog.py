@@ -6,7 +6,7 @@ import random
 import asyncio
 
 
-class gamble(commands.Cog):
+class gamble_cog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot  
         
@@ -134,5 +134,5 @@ class gamble(commands.Cog):
                 
                 
 async def setup(bot):
-    await bot.add_cog(gamble(bot))
+    await bot.add_cog(gamble_cog(bot))
 
