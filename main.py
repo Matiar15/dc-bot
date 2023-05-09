@@ -3,8 +3,10 @@ import os
 import discord
 from discord.ext import commands
 import json
-data = json.load(open('token.json'))
-TOKEN = data(['TOKEN'])
+with open("token.json", 'r') as raw_data:
+    data = json.load(raw_data)
+data = data['TOKEN']
+TOKEN = data
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)

@@ -1,13 +1,10 @@
 import mysql.connector
 from mysql.connector import Error
+import json
+with open("token.json", 'r') as raw_data:
+    data = json.load(raw_data)
 
-
-config = {
-'user': 'user',
-'password': 'password',
-'host': 'host',
-'database': 'database',
-'raise_on_warnings': True,}
+data = data["$schema"]
 
 
 # FIXME: change mysql.connector to aiomysql
@@ -17,7 +14,7 @@ config = {
 def mysqlConnection():
     db_connection = None
     try:
-        db_connection = mysql.connector.connect(**config)
+        db_connection = mysql.connector.connect(**data)
     except Error as e:
         print(e)
     
@@ -33,6 +30,16 @@ def mysqlQueryWithValue(query, value):
     print('Query executed correcly!')
     connection.close()
     return data        
+    
+def mysqlQuery(query):
+    connection = mysqlConnection()
+    cursor = connection.cursor(buffered=False)
+    data = None
+    cursor.execute(query)
+    data = cursor.fetchall()
+    print('Query executed correcly!')
+    connection.close()
+    return data     
     
 
 def mysqlQueryDeleteUpdateWithValue(query, value):
@@ -71,4 +78,3 @@ def mysqlInsert(query):
     connection.close()
     row = cursor.lastrowid
     return row
-    
