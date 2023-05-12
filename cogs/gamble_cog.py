@@ -170,14 +170,20 @@ class gamble_cog(commands.Cog):
             await interaction.followup.send(f'{random_word}')
             
             while chances != 80:
+
                 await interaction.followup.send('Send your word 🙂')
                 player_word = await self.bot.wait_for('message', timeout=15)
-                player_word: str = player_word.content
+                player_word: str = str(player_word.content)
+                
+                while player_word not in json_words:
+                    await interaction.followup.send('Your word is not in wordlist.\nSend your word 🙂')
+                    player_word = await self.bot.wait_for('message', timeout=15)
+                    player_word: str = player_word.content
                 
                 list_letters_player: list = [y for y in player_word]
                 list_letters_word: list = [x for x in random_word]
                 
-                correct_letters = list(player_word)
+                correct_letters: list = list_letters_player.copy()
                 
                 if player_word == random_word:
                     player_word_emotes = list(player_word)
@@ -187,7 +193,7 @@ class gamble_cog(commands.Cog):
                     amount = amount * chances / 100
                     balance_amount += amount
                     await asyncio.sleep(1)
-                    await interaction.followup.send(f'YOU HAVE WON! 😁😁\nTHE WORD WAS: {" ".join(player_word_emotes)}')
+                    await interaction.followup.send(f'YOU HAVE WON! 😁😁\nTHE WORD WAS: {" ".join(player_word_emotes)}\nYour prize is {int(amount)}!')
                     try:
                         gamble_cog.__insert_balance(balance_id, balance_amount)
                     except mysqlconnection.Error as _:

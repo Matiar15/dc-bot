@@ -10,6 +10,7 @@ data = data["$schema"]
 # FIXME: change mysql.connector to aiomysql
 # because mysql.connector can't handle refreshing data 
 
+#FIXME: change function names
 
 def mysqlConnection():
     db_connection = None
