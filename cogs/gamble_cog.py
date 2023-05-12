@@ -135,7 +135,6 @@ class gamble_cog(commands.Cog):
             await interaction.followup.send(f'Your current balance is {balance} 🧔')
         
     
-    # BUG: when you miss the index of the letter many times, it uppercases all of the letters you wrote.            
     @app_commands.command()
     async def wordle(self, interaction: discord.Interaction, amount: int):    
             ''' Wordle, when letter is uppercase, it is somewhere in the word, when it's an emote,
