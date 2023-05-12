@@ -1,5 +1,5 @@
 import random
-
+import json
 
 list_of_words: set = ['maslo', 'makar', 'melin']
 emotes_instead_of_letters: dict = {"a": "regional_indicator_a",
@@ -24,8 +24,7 @@ emotes_instead_of_letters: dict = {"a": "regional_indicator_a",
                                     "u": "regional_indicator_u", 
                                     "w": "regional_indicator_w", 
                                     "y": "regional_indicator_y", 
-                                    "z": "regional_indicator_z", 
-                                    
+                                    "z": "regional_indicator_z"
                                     }
 
 
@@ -33,8 +32,8 @@ def game():
     chosen_word: str = random.choice(list_of_words)
     chances: int = 6
     
-    correct_letters = ['x' for _ in range(5)]
     
+    print(f'{chosen_word}')
     
     while(chances != 0):
         player_word: str = input("Wprowadź słowo 5 literowe: ").lower()
@@ -45,29 +44,31 @@ def game():
         
         list_letters_word = [x for x in chosen_word]
         list_letters_player = [y for y in player_word]
+        correct_letters = list_letters_player.copy()
         
         for i in range(len(list_letters_word)):
             
             if list_letters_word[i] == list_letters_player[i]:
                 correct_letters[i] = emotes_instead_of_letters[list_letters_word[i]]
+                list_letters_word[i] = '-1'
+        
+        for i in range(len(list_letters_word)):
                 
-            for j in range(len(list_letters_player)):
-                
-                if ((list_letters_word[j] == list_letters_player[j]) and 
-                    (correct_letters[i] not in emotes_instead_of_letters.values())):
-                    if list_letters_player[i] in list_letters_word:
-                        correct_letters[i] = list_letters_player[i].upper()
-                    else:
-                        correct_letters[i] = list_letters_player[i]
-                    
-                    
+            if ((list_letters_player[i] in list_letters_word) and 
+                (correct_letters[i] not in emotes_instead_of_letters.values())):
+                correct_letters[i] = correct_letters[i].upper()
+            elif (correct_letters[i] not in emotes_instead_of_letters.values()):
+                correct_letters[i] = list_letters_player[i]          
+        
         
         if player_word != chosen_word:
             chances -= 1
         
         print(f'correct_letters >>> {correct_letters}')
+        print(f'list_letters_word >>> {list_letters_word}')
         print(f'chances >>> {chances}')
     return 'Szanse sie skonczyly, sprobuj ponownie!'
 
 if __name__ == '__main__':
     game()
+    
