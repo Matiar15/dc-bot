@@ -81,7 +81,7 @@ class GambleCog(commands.Cog):
             
             else:
                 await asyncio.sleep(2)
-                await interaction.followup.send(f'Your current balance is {balance} 🧔')
+                await interaction.followup.send(f'Your current balance is {balance_amount} 🧔')
            
             
     @app_commands.command()
@@ -270,7 +270,9 @@ class GambleCog(commands.Cog):
                 else:
                     await asyncio.sleep(1)
                     await interaction.followup.send('Unfortunately you lost 😑\nMaybe try again! I\'m interested in taking all of your coins. 😈 😈')
-          
+            
+            await asyncio.sleep(2)
+            await interaction.followup.send(f'Your current balance is {balance_amount} 🧔')
           
 def get_balance(author: str, amount: int):
     r'''Gets user's balance from database.
