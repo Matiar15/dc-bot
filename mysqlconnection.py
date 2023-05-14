@@ -7,7 +7,7 @@ with open("token.json", 'r') as raw_data:
     data = json.load(raw_data)
 
 data = data["$schema"]
-print(data)
+
 
 def mysql_connection() -> mysql.connector.MySQLConnection | None:
     r'''Connects to MySQL database with parameters already defined in a json config file.
