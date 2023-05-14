@@ -41,18 +41,17 @@ class GambleCog(commands.Cog):
         await interaction.response.defer()
         author: discord.User | discord.Member = interaction.user
         author: tuple = cog_helper.user_to_str(author)
-        
         try:   
             data: list = get_balance(author, amount)  
             balance_amount: int = data[0]
             balance_id: int = data[1]
             
         except mysqlconnection.Error as _:
-            await asyncio.sleep(1)
             await interaction.followup.send(f'Something went wrong with executing your request 😣')
-            
+        except TypeError as _:
+            await interaction.followup.send(f'I couldn\'t find your balance, consider adding one! 😑')
+          
         except ValueError as _:
-            await asyncio.sleep(1)
             await interaction.followup.send(f'The amount of coins you put to command is bigger than ur balance, choose another number 😐')
         
         else: 
@@ -76,11 +75,10 @@ class GambleCog(commands.Cog):
                 update_balance(balance_id, balance_amount)
             
             except mysqlconnection.Error as _:
-                await asyncio.sleep(1)
                 await interaction.followup.send(f'Something went wrong with executing your request 😣')  
             
             else:
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
                 await interaction.followup.send(f'Your current balance is {balance_amount} 🧔')
            
             
@@ -115,21 +113,25 @@ class GambleCog(commands.Cog):
         
         try:   
             data: list = get_balance(author, amount)  
+            if data is None: raise mysqlconnection.Error 
             balance_amount: int = data[0]
             balance_id: int = data[1]
+        
+        except TypeError as _:
+            await interaction.followup.send(f'I couldn\'t find your balance, consider adding one! 😑')
             
         except mysqlconnection.Error as _:
-            await asyncio.sleep(1)
             await interaction.followup.send(f'Something went wrong with executing your request 😣')
             
         except ValueError as _:
-            await asyncio.sleep(1)
             await interaction.followup.send(f'The amount of coins you put to command is bigger than ur balance, choose another number 😐')      
         
         else:
             await interaction.followup.send(f'Rolling...')
             await asyncio.sleep(1)
             roll_roulette = random.choice(['black', 'black', 'blackfish', 'black', 'black', 'black', 'black', 'green', 'red', 'redfish', 'red', 'red', 'red', 'red', 'red'])
+            await interaction.followup.send(f'Rolled a {roll_roulette.capitalize()}')
+            await asyncio.sleep(1)
             
             if roll_roulette == color.value:
                 if color.value == ('green'):
@@ -154,7 +156,7 @@ class GambleCog(commands.Cog):
                 await interaction.followup.send(f'Something went wrong with executing your request 😣')  
             
             else:
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
                 await interaction.followup.send(f'Your current balance is {balance_amount} 🧔')
         
 
@@ -186,15 +188,19 @@ class GambleCog(commands.Cog):
             
             try:   
                 data: list = get_balance(author, amount)  
+                if data is None: raise mysqlconnection.Error 
                 balance_amount: int = data[0]
                 balance_id: int = data[1]
-                
+            
+            except TypeError as _:
+                await interaction.followup.send(f'I couldn\'t find your balance, consider adding one! 😑')
+                return
             except mysqlconnection.Error as _: 
                 await interaction.followup.send(f'Something went wrong with executing your request 😣')
-            
+                return
             except ValueError: 
                 await interaction.followup.send(f'The amount of coins you put to command is bigger than ur balance, choose another number 😐') 
-            
+                return
             chances: int = 200
             
             json_words: list = json_info['$five_letter_words']
@@ -271,8 +277,8 @@ class GambleCog(commands.Cog):
                     await asyncio.sleep(1)
                     await interaction.followup.send('Unfortunately you lost 😑\nMaybe try again! I\'m interested in taking all of your coins. 😈 😈')
             
-            await asyncio.sleep(2)
-            await interaction.followup.send(f'Your current balance is {balance_amount} 🧔')
+            await asyncio.sleep(1)
+            await interaction.followup.send(f'Your current balance is {int(balance_amount)} 🧔')
           
 def get_balance(author: str, amount: int):
     r'''Gets user's balance from database.
@@ -300,8 +306,9 @@ def get_balance(author: str, amount: int):
     FROM discord_user_balance 
     join discord_user 
     on discord_user.balance_id = discord_user_balance.balance_id where discord_user.user_name = %s;""")
-    
     data: tuple = mysqlconnection.mysql_query_with_value(query, author)
+    if data is None: 
+        raise TypeError 
     balance_amount: int = data[0]
     balance_id: int = data[1]
     if amount > balance_amount: 
@@ -309,7 +316,7 @@ def get_balance(author: str, amount: int):
     balance_amount -= amount
     balance_data = [balance_amount, balance_id]
     return balance_data
-     
+        
     
 def update_balance(balance_id: int, balance_amount: int):
     r'''Updates user balance with new balance amount.

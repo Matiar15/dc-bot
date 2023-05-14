@@ -19,6 +19,8 @@ class BalanceCog(commands.Cog):
             -----------
             mysqlconnection.Error
                 User was not added to the MySQL database or something went wrong with database connection.
+            TypeError
+                Data read by MySQL query was None.
         '''    
         author: discord.User | discord.Member = interaction.user
         
@@ -32,12 +34,16 @@ class BalanceCog(commands.Cog):
         
         try:
             data: list = mysqlconnection.mysql_query_with_value(query, author)
+            if data is None: raise TypeError 
+        
+        except TypeError as _:
+            await interaction.response.send_message(f'I couldn\'t find your balance, consider adding one! 😑')
         
         except mysqlconnection.Error as _:
-            await interaction.response.send_message('I couldn\'t find your balance, consider adding one! 😑')
+            await interaction.response.send_message('Something went wrong with database connection 😑')
         
         else:    
-            await interaction.response.send_message(f'Your current balance is: {data[0][0]} bucks! 💸💸💸')
+            await interaction.response.send_message(f'Your current balance is: {data[0]} bucks! 💸💸💸')
 
 
     @app_commands.command(description='Everyday you get 500 coins!🤑🤑')
@@ -48,6 +54,8 @@ class BalanceCog(commands.Cog):
             -----------
             mysqlconnection.Error
                 User was not added to the MySQL database or something went wrong with database connection.
+            TypeError
+                Data read by MySQL query was None.
         '''
         author: discord.User | discord.Member = interaction.user
         
@@ -60,9 +68,13 @@ class BalanceCog(commands.Cog):
         
         try:
             data: list = mysqlconnection.mysql_query_with_value(query, author)
+            if data is None: raise TypeError
         
-        except mysqlconnection.Error as _:
+        except TypeError as _:
             await interaction.response.send_message(f'I couldn\'t find your balance, consider adding one! 😑')
+
+        except mysqlconnection.Error as _:
+                    await interaction.response.send_message(f'Something went wrong with database connection 😑')    
         
         else: 
             daily_reward: datetime = data[2]               # Getting the data from MySQL query into variables.
@@ -116,7 +128,7 @@ def update_balance(balance_amount: int, daily_collected_at: datetime, balance_id
         Raises
         -----------
         mysqlconnection.Error
-            User was not added to the MySQL database or something went wrong with database connection.  
+            Something went wrong with database connection.  
     '''
     query: str = """UPDATE discord_user_balance
                         SET balance_amount = %s, daily_reward_at = %s
