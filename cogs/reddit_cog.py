@@ -20,6 +20,7 @@ reddit.read_only = True
 
 
 class RedditCog(commands.Cog):
+    r'''A cog with reddit commands.'''
     def __init__(self, bot):
         self.bot = bot
 

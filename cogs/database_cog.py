@@ -6,6 +6,7 @@ import cog_helper
 
 
 class DatabaseCog(commands.Cog):
+    r'''A cog with database commands.'''
     def __init__(self, bot):
         self.bot = bot
 

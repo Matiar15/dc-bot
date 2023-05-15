@@ -9,6 +9,7 @@ import cog_helper
 
 
 class GambleCog(commands.Cog):
+    r'''A cog with gambling commands.'''
     def __init__(self, bot):
         self.bot = bot  
     
@@ -89,7 +90,7 @@ class GambleCog(commands.Cog):
                                 app_commands.Choice(name="Redfish", value="redfish"),
                                 app_commands.Choice(name="Green", value="green")])
     async def roulette(self, interaction: discord.Interaction, amount: int , color: app_commands.Choice[str]):
-        r'''Choose a color to roll (Black, Black-Fish, Red, Red-Fish, Green). Black/Red gives 2x the amount you gave to command.
+        r'''Choose a color to roll (Black, Blackfish, Red, Redfish, Green). Black/Red gives 2x the amount you gave to command.
             Black-Fish/Red-Fish gives x7 the amount you gave to the command or x2 if you chose Black/Red.
             Green gives x14 the amount you gave to the command.
             
