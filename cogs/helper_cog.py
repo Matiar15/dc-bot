@@ -24,6 +24,7 @@ class CogHelper(commands.Cog):
                 embed = discord.Embed(title='Gambling', description='MatBot\'s gambling commands.', colour=0x992d22)
                 
                 embed.set_thumbnail(url='attachment://matbotpic.png')
+                
                 embed.add_field(name='/toss', value='''Toss a coin.
                     The amount you put into command will be taken from your database balance.
                     If your guess was right, you get the amount back doubled.''')
@@ -40,6 +41,7 @@ class CogHelper(commands.Cog):
                     You have 6 tries, each try you lose 0.2 from your amount.''')
                 
                 embed.set_footer(text=f'Information requested by: {str(interaction.user)}')
+                
                 await interaction.response.send_message(file=file, embed=embed)
             
             case 'database':
