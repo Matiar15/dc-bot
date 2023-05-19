@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 #Bot token
 token.json
 
 #Test python file
 test.py
 
+=======
+#TOKEN TO THE BOT
+token.json
+
+>>>>>>> 50dcec8 (.)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
